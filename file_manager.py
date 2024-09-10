@@ -73,4 +73,8 @@ class FileManager:
                 modified = datetime.fromtimestamp(os.path.getmtime(item_path)).strftime('%Y-%m-%d %H:%M:%S')
                 self.file_tree.insert('', 'end', text=item, values=(self.convert_size(size), created, modified))
 
-
+    def convert_size(self, size):
+        for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
+            if size < 1024:
+                return f"{size:.2f}{unit}"
+            size /= 1024
