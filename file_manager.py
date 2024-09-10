@@ -61,5 +61,16 @@ class FileManager:
                     self.folder_tree.insert(selected_item, 'end', text=item_path, values=('', '', ''))
             self.display_folder_contents(None)
 
+    def display_folder_contents(self, event):
+        self.file_tree.delete(*self.file_tree.get_children())
+        selected_item = self.folder_tree.selection()[0]
+        folder_path = self.folder_tree.item(selected_item, 'text')
+        if os.path.isdir(folder_path):
+            for item in os.listdir(folder_path):
+                item_path = os.path.join(folder_path, item)
+                size = os.path.getsize(item_path)
+                created = datetime.fromtimestamp(os.path.getctime(item_path)).strftime('%Y-%m-%d %H:%M:%S')
+                modified = datetime.fromtimestamp(os.path.getmtime(item_path)).strftime('%Y-%m-%d %H:%M:%S')
+                self.file_tree.insert('', 'end', text=item, values=(self.convert_size(size), created, modified))
 
 
