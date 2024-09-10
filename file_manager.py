@@ -78,3 +78,12 @@ class FileManager:
             if size < 1024:
                 return f"{size:.2f}{unit}"
             size /= 1024
+
+    def create_folder(self):
+        select_item = self.folder_tree.selection()[0]
+        path = self.folder_tree.item(select_item, 'text')
+        if os.path.isdir(path):
+            folder_name = filedialog.askstring("Folder Name", "Enter folder name:")
+            if folder_name:
+                os.makedirs(os.path.join(path, folder_name))
+                self.load_folders(None)
