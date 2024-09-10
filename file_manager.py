@@ -98,3 +98,13 @@ class FileManager:
             else:
                 os.remove(path)
             self.display_folder_contents(None)
+
+    def rename_item(self):
+        selected_item = self.file_tree.selection()[0]
+        folder_item = self.file_tree.selection()[0]
+        path = os.path.join(self.folder_tree.item(folder_item, 'text'), self.file_tree.item(selected_item, 'text'))
+        new_name = filedialog.askstring("Rename", "Enter new name:")
+        if new_name:
+            new_path = os.path.join(os.path.dirname(path), new_name)
+            os.rename(path, new_path)
+            self.display_folder_contents(None)
