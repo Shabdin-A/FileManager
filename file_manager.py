@@ -50,4 +50,16 @@ class FileManager:
             self.folder_tree.insert('', 'end', text=drive, values=(drive, '', ''))
             self.folder_tree.bind('<<TreeviewSelect>>', self.load_folders)
 
+    def load_folders(self, event):
+        selected_item = self.folder_tree.selection()[0]
+        path = self.folder_tree.item(selected_item, 'text')
+        if os.path.isdir(path):
+            self.folder_tree.delete(*self.folder_tree.get_children(selected_item))
+            for item in os.listdir(path):
+                item_path = os.path.join(path, item)
+                if os.path.isdir(item_path):
+                    self.folder_tree.insert(selected_item, 'end', text=item_path, values=('', '', ''))
+            self.display_folder_contents(None)
+
+
 
