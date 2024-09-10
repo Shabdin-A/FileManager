@@ -89,7 +89,7 @@ class FileManager:
                 self.load_folders(None)
 
     def delete_item(self):
-        select_item = self.folder_tree.selection()[0]
+        select_item = self.file_tree.selection()[0]
         folder_item = self.folder_tree.selection()[0]
         path = os.path.join(self.folder_tree.item(folder_item, 'text'), self.file_tree.item(select_item, 'text'))
         if messagebox.askyesno("Delete", f"Are you sure you want to delete {path}?"):
@@ -108,3 +108,12 @@ class FileManager:
             new_path = os.path.join(os.path.dirname(path), new_name)
             os.rename(path, new_path)
             self.display_folder_contents(None)
+
+    def zip_folder(self):
+        selected_item = self.file_tree.selection()[0]
+        folder_item = self.folder_tree.selection()[0]
+        path = os.path.join(self.folder_tree.item(folder_item, 'text'), self.file_tree.item(selected_item, 'text'))
+        if os.path.isdir(path):
+            zip_name = filedialog.asksaveasfilename(defaultextension=".zip", filetypes=[("Zip files", "*.zip")])
+            if zip_name:
+                shutil.make_archive(zip_name.replace(".zip", ""), 'zip', path)
