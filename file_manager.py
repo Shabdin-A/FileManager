@@ -117,3 +117,13 @@ class FileManager:
             zip_name = filedialog.asksaveasfilename(defaultextension=".zip", filetypes=[("Zip files", "*.zip")])
             if zip_name:
                 shutil.make_archive(zip_name.replace(".zip", ""), 'zip', path)
+
+    def extract_zip(self):
+        selected_item = self.file_tree.selection()[0]
+        folder_item = self.folder_tree.selection()[0]
+        path = os.path.join(self.folder_tree.item(folder_item, 'text'), self.file_tree.item(selected_item, 'text'))
+        if path.endswith(".zip"):
+            extract_path = filedialog.askdirectory()
+            if extract_path:
+                with zipfile.ZipFile(path, 'r') as zip_ref:
+                    zip_ref.extractall(extract_path)
