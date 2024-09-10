@@ -87,3 +87,14 @@ class FileManager:
             if folder_name:
                 os.makedirs(os.path.join(path, folder_name))
                 self.load_folders(None)
+
+    def delete_item(self):
+        select_item = self.folder_tree.selection()[0]
+        folder_item = self.folder_tree.selection()[0]
+        path = os.path.join(self.folder_tree.item(folder_item, 'text'), self.file_tree.item(select_item, 'text'))
+        if messagebox.askyesno("Delete", f"Are you sure you want to delete {path}?"):
+            if os.path.isdir(path):
+                shutil.rmtree(path)
+            else:
+                os.remove(path)
+            self.display_folder_contents(None)
