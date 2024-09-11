@@ -28,7 +28,7 @@ class FileManager:
         self.file_tree.heading('modified', text="Modified")
         self.file_tree.pack(fill="both", expand=True)
 
-        self.load_drivers()
+        self.load_drives()
 
         self.create_context_menu()
 
@@ -37,7 +37,7 @@ class FileManager:
         self.context_menu.add_command(label="Create Folder", command=self.create_folder)
         self.context_menu.add_command(label="Delete", command=self.delete_item)
         self.context_menu.add_command(label="Rename", command=self.rename_item)
-        self.context_menu.add_command(label="Zip Folder", command=self.zip_filder)
+        self.context_menu.add_command(label="Zip Folder", command=self.zip_folder)
         self.context_menu.add_command(label="Extract Zip", command=self.extract_zip)
         self.file_tree.bind("<<Button-3>>", self.show_context_menu)
 
@@ -127,3 +127,8 @@ class FileManager:
             if extract_path:
                 with zipfile.ZipFile(path, 'r') as zip_ref:
                     zip_ref.extractall(extract_path)
+
+if __name__ == "__main__":
+    window = ttk.Window(themename="darkly")
+    app = FileManager(window)
+    window.mainloop()
