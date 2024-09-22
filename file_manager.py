@@ -41,7 +41,6 @@ class FileManager:
         self.file_tree.pack(fill="both", expand=True)
 
         self.load_drives()
-
         self.create_context_menu()
 
     def create_context_menu(self):
@@ -59,8 +58,8 @@ class FileManager:
     def load_drives(self):
         drives = [f'{d}:' for d in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' if os.path.exists(f'{d}:')]
         for drive in drives:
-            self.folder_tree.insert('', 'end', text=drive, values=(drive, '', ''))
-            self.folder_tree.bind('<<TreeviewSelect>>', self.load_folders)
+            self.folder_tree.insert('', 'end', text=drive)
+        self.folder_tree.bind('<<TreeviewSelect>>', self.load_folders)
 
     def load_folders(self, event=None):
         selected_item = self.folder_tree.selection()[0]
@@ -70,8 +69,8 @@ class FileManager:
             for item in os.listdir(path):
                 item_path = os.path.join(path, item)
                 if os.path.isdir(item_path):
-                    self.folder_tree.insert(selected_item, 'end', text=item_path, values=('', '', ''))
-            self.display_folder_contents(None)
+                    self.folder_tree.insert(selected_item, 'end', text=item_path)
+            self.display_folder_contents(event)
 
     def display_folder_contents(self, event):
         self.file_tree.delete(*self.file_tree.get_children())
@@ -163,8 +162,8 @@ class FileManager:
         path = self.address_bar.get()
         if os.path.isdir(path):
             self.folder_tree.selection_set('')
-            self.file_tree.delete(*self.file_tree.get_children())
-            self.display_folder_contents(None)
+            self.load_folders(None)
+            self.display_folder_contents(event)
         else:
             messagebox.showerror("Error", "Invalid path")
 
@@ -177,7 +176,6 @@ class FileManager:
                 self.file_tree.see(child)
                 return
         messagebox.showinfo("Not Found", "No matching file or folder found.")
-
 
 if __name__ == "__main__":
     window = ttk.Window(themename="darkly")
