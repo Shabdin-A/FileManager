@@ -12,6 +12,9 @@ class FileManager:
         self.window.title("FileManager")
         self.window.geometry("1000x600")
 
+        self.window.grid_columnconfigure(0, weight=1)
+        self.window.grid_columnconfigure(1, weight=1)
+
         self.search_bar = ttk.Entry(self.window)
         self.search_bar.grid(row=0, column=0, columnspan=2, padx=10, pady=5, sticky="ew")
         self.search_bar.bind("<Return>", self.search_item)
@@ -59,7 +62,7 @@ class FileManager:
             self.folder_tree.insert('', 'end', text=drive, values=(drive, '', ''))
             self.folder_tree.bind('<<TreeviewSelect>>', self.load_folders)
 
-    def load_folders(self, event):
+    def load_folders(self, event=None):
         selected_item = self.folder_tree.selection()[0]
         path = self.folder_tree.item(selected_item, 'text')
         if os.path.isdir(path):
